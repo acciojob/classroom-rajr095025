@@ -9,12 +9,11 @@ import java.util.List;
 @Service
 public class StudentService {
 
-    /*
     @Autowired
     StudentRepository studentRepository;
-    */
 
-    StudentRepository studentRepository = new StudentRepository();
+
+    //StudentRepository studentRepository = new StudentRepository();
     public void addStudent(Student student) {
         studentRepository.addStudent(student);
     }
