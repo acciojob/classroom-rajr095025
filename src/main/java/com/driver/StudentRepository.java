@@ -60,6 +60,7 @@ public class StudentRepository {
     }
 
     public void deleteTeacherByName(String teacher) {
+        teacherMap.remove(teacher);
         for(Map.Entry<String,String> entry : teacherStudentMap.entrySet()) {
             if(entry.getValue().equals(teacher)){
 
