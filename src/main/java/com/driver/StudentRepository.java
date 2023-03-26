@@ -16,7 +16,7 @@ public class StudentRepository {
 
     HashMap <String,Teacher> teacherMap = new HashMap<>();
 
-    HashMap <String,String> teacherStudentMap = new HashMap<>();
+    HashMap <String,List<Student>> teacherStudentMap = new HashMap<>();
     public void addStudent(Student student) {
         String key = student.getName();
         studentMap.put(key,student);
@@ -29,7 +29,13 @@ public class StudentRepository {
     }
 
     public void addStudentTeacherPair(String student, String teacher) {
-        teacherStudentMap.put(student,teacher);
+        List <Student> tempList = teacherStudentMap.get(teacher);
+        if(tempList == null){
+            tempList = new ArrayList <> ();
+        }
+        tempList.add(studentMap.get(student));
+        teacherStudentMap.put(teacher,tempList);
+
     }
 
 
@@ -42,13 +48,20 @@ public class StudentRepository {
     }
 
     public List<String> getStudentsByTeacherName(String teacher) {
+        /*
         List<String> studentList = new ArrayList<>();
         for(String tempStudent : teacherStudentMap.keySet()){
             if(teacherStudentMap.get(tempStudent).equals(teacher)){
                 studentList.add(tempStudent);
             }
         }
-        return studentList;
+         */
+        List <Student> listStudent = teacherStudentMap.get(teacher);
+        List <String> ans = new ArrayList<>();
+        for(Student student : listStudent){
+            ans.add(student.getName());
+        }
+        return ans;
     }
 
     public List<String> getAllStudents() {
@@ -59,7 +72,15 @@ public class StudentRepository {
         return studentList;
     }
 
-    public void deleteTeacherByName(String teacher) {
+    public void deleteTeacherByName(String teacherName) {
+        Teacher teacher = teacherMap.get(teacherName);
+        teacherMap.remove(teacherName);
+        List<Student> students = teacherStudentMap.get(teacherName);
+        teacherMap.remove(teacher);
+        for(Student student : students){
+            studentMap.remove(student.getName());
+        }
+        /*
         teacherMap.remove(teacher);
         for(Map.Entry<String,String> entry : teacherStudentMap.entrySet()) {
             if(entry.getValue().equals(teacher)){
@@ -70,13 +91,22 @@ public class StudentRepository {
                 teacherStudentMap.remove(studentName);
             }
         }
+        */
     }
 
     public void deleteAllTeachers() {
 
         for(String teacherName : teacherMap.keySet()){
             teacherMap.remove(teacherName);
+            Teacher teacher = teacherMap.get(teacherName);
+            teacherMap.remove(teacherName);
+            List<Student> students = teacherStudentMap.get(teacherName);
+            teacherMap.remove(teacher);
+            for(Student student : students){
+                studentMap.remove(student.getName());
+            }
 
+            /*
             for(Map.Entry<String,String> entry : teacherStudentMap.entrySet()){
                 if(entry.getValue().equals(teacherName)){
                     String studentName = entry.getKey();
@@ -85,6 +115,7 @@ public class StudentRepository {
                     teacherStudentMap.remove(studentName);
                 }
             }
+             */
         }
     }
 }
