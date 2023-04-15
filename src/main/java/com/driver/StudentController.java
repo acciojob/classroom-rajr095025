@@ -24,7 +24,7 @@ public class StudentController {
     StudentService studentService;
 
 
-    //StudentService studentService = new StudentService();
+    //StudentService studentService = new StudentService(); no need incase of autowired
     @PostMapping("/add-student")
     public ResponseEntity<String> addStudent(@RequestBody Student student){
         studentService.addStudent(student);
